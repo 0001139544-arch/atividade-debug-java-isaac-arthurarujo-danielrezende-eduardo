@@ -1,8 +1,11 @@
+package org.example;
+
 import java.util.Scanner;
 import java.time.YearMonth;
 import java.time.LocalDate;
 
 public class Calendario {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -14,38 +17,39 @@ public class Calendario {
 
         YearMonth anoMes = YearMonth.of(ano, mes);
 
-        // ERRO LÓGICO 1: Subtraindo 1 do total de dias reais do mês.
-        int diasNoMes = anoMes.lengthOfMonth() - 1;
+        int diasNoMes = anoMes.lengthOfMonth();
 
-        int diaDaSemana1o = LocalDate.of(ano, mes, 1).getDayOfWeek().getValue();
+        int diaDaSemana = LocalDate.of(ano, mes, 1)
+                .getDayOfWeek()
+                .getValue();
 
-        // ERRO LÓGICO 2: Cálculo errado do dia inicial.
-        int diaInicial = (diaDaSemana1o % 7) + 1;
+        int diaInicial = diaDaSemana % 7;
 
-        System.out.println("\nCalendário de " + String.format("%02d/%d", mes, ano));
-        System.out.println("---------------------------");
+        System.out.printf("\n     %02d/%d\n", mes, ano);
+        System.out.println("-----------------------------");
 
         String[] diasDaSemana = {"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"};
+
         for (String d : diasDaSemana) {
-            System.out.print(d + " ");
+            System.out.printf("%s ", d);
         }
+
         System.out.println();
 
-        // ERRO LÓGICO 3: Condição com '<=' imprime um espaço em branco a mais.
-        for (int i = 0; i <= diaInicial; i++) {
+        for (int i = 0; i < diaInicial; i++) {
             System.out.print("    ");
         }
 
         for (int dia = 1; dia <= diasNoMes; dia++) {
-            System.out.printf("%02d  ", dia);
+            System.out.printf("%4d", dia);
 
-            // ERRO LÓGICO 4: Quebra de linha não considera o 'diaInicial' dos espaços vazios.
-            if (dia % 7 == 0) {
+            if ((dia + diaInicial) % 7 == 0) {
                 System.out.println();
             }
         }
 
-        System.out.println("\n\n---------------------------");
+        System.out.println("\n-----------------------------");
+
         scanner.close();
     }
 }
